@@ -1,15 +1,14 @@
 ﻿#include <vector>
 #include <cmath>
 #include <iostream>
-#include <locale>
-#include "windows.h"
+#include "Windows.h"
 using namespace std;
 
 int main()
 {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	cout << "Введіть номер завдання: ";
+	cout << "12:\nВведіть номер завдання: ";
 	int a;
 	cin >> a;
 	switch (a)
@@ -24,8 +23,9 @@ int main()
 		for (int i = 0; i < n; i++)
 		{
 			cin >> arr[i];
-			if (i > 0 && !(arr[i] % 5) && !(arr[i - 1] % 5))
-				res++;
+			if (i > 0)
+				if(!(arr[i] % 2) && !(arr[i - 1] % 2))
+					res++;
 		}
 		cout << "Результат: " << res << endl;
 		break;
@@ -52,92 +52,31 @@ int main()
 	}
 	case 3:
 	{
+		cout << "\nВ умові задачі пропущена одна гиря: 300г. Також не вказано, є ВСЬОГО 10 гир чи 10 ВИДІВ гир. \nВведіть 0, якщо гир кожної маси всьго по одній, або 1 - якщо необмежена кількість: ";
+		bool b;
+		cin >> b;
 		cout << "\nВведіть значення k: ";
 		int k, res=0;
 		cin >> k;
-		const vector<int> arr = { 100, 200, 500, 1000, 1200, 1400, 1500, 2000, 3000 };
-		for (int i1 = 0; i1 < 9; i1++) 
+		const int arr[] = {100, 200, 300, 500, 1000, 1200, 1400, 1500, 2000, 3000};
+		vector<int> comb(k+1, 0);
+		comb[0] = 1;
+		if (b)
 		{
-			int s1 = arr[i1];
-			if (s1 == k)
-				res++;
-			else if (s1 > k)
-				break;
-
-			for (int i2 = i1 + 1; i2 < 9; i2++) 
-			{
-				int s2 = s1 + arr[i2];
-				if (s2 == k)
-					res++;
-				else if (s2 > k)
-					break;
-
-				for (int i3 = i2 + 1; i3 < 9; i3++) 
-				{
-					int s3 = s2 + arr[i3];
-					if (s3 == k)
-						res++;
-					else if (s3 > k)
-						break;
-
-					for (int i4 = i3 + 1; i4 < 9; i4++) 
-					{
-						int s4 = s3 + arr[i4];
-						if (s4 == k)
-							res++;
-						else if (s4 > k)
-							break;
-
-						for (int i5 = i4 + 1; i5 < 9; i5++) 
-						{
-							int s5 = s4 + arr[i5];
-							if (s5 == k)
-								res++;
-							else if (s5 > k)
-								break;
-
-							for (int i6 = i5 + 1; i6 < 9; i6++) 
-							{
-								int s6 = s5 + arr[i6];
-								if (s6 == k)
-									res++;
-								else if (s6 > k)
-									break;
-
-								for (int i7 = i6 + 1; i7 < 9; i7++) 
-								{
-									int s7 = s6 + arr[i7];
-									if (s7 == k)
-										res++;
-									else if (s7 > k)
-										break;
-
-									for (int i8 = i7 + 1; i8 < 9; i8++) 
-									{
-										int s8 = s7 + arr[i8];
-										if (s8 == k)
-											res++;
-										else if (s8 > k)
-											break;
-
-										for (int i9 = i8 + 1; i9 < 9; i9++) 
-										{
-											int s9 = s8 + arr[i9];
-											if (s9 == k)
-												res++;
-											else if (s9 > k)
-												break;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+			for (int i = 0; i < 10; i++)
+				for (int j = arr[i]; j <= k; j++)
+					comb[j] += comb[j - arr[i]];
 		}
+		else
+		{
+			for (int i = 0; i < 10; i++)
+				for (int j = k; j >= arr[i]; j--)
+					comb[j] += comb[j - arr[i]];
+		}
+		res = comb[k];
 		cout << "Результат: " << res << endl;
 	}
 	}
+	cin.ignore();
 	return 0;
 }
